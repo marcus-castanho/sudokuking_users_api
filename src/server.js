@@ -1,23 +1,12 @@
 const express = require('express');
-const mongoose = require('mongoose');
-const requireDir = require('require-dir');
+const bodyParser = require('body-parser');
+
 
 const app = express();
 
-mongoose.connect('mongodb://192.168.99.100:27017/sudokuking_users_db', { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
-requireDir('./models');
-
-const User = mongoose.model('User');
-
-app.get('/', (req, res) => {
-    User.create({
-        username: 'marcus',
-        email: 'castanhomarcus@gmail.com',
-        password: 'senhasudokuking',
-    });
-
-    return res.send("Working")
-})
+require('./controller/authController')(app);
 
 app.listen(3001);
