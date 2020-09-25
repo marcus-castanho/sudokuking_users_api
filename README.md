@@ -7,7 +7,7 @@ An API to register, authenticate and manage users of the [Sudoku King app](https
 - Score record of users game sessions
 
 ## Stack
-- Language/runtime environement: JS/[NodeJS] (https://nodejs.org/en/)
-- Database: [MongoDB] (https://www.mongodb.com/)
-- Library to handle database objects: [Mongoose] (https://github.com/Automattic/mongoose)
-- Framework to handle requests: [Express] (https://github.com/expressjs/express)
+- Language/runtime environement: JS/[NodeJS](https://nodejs.org/en/)
+- Database: [MongoDB](https://www.mongodb.com/)
+- Library to handle database objects: [Mongoose](https://github.com/Automattic/mongoose)
+- Framework to handle requests: [Express](https://github.com/expressjs/express)
