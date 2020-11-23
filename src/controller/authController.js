@@ -2,9 +2,15 @@ const express = require('express');
 const User = require('../models/User')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const authConfig = ('../config/auth.json');
+const authConfig = require('../config/auth');
 
 const router = express.Router();
+
+function generateToken(params = {}) {
+    return jwt.sign(params, authConfig.secret, {
+        expiresIn: 86400,
+    });
+}
 
 router.post('/register', async (req, res) => {
     try {
@@ -17,7 +23,7 @@ router.post('/register', async (req, res) => {
 
         user.password = undefined;
 
-        return res.json({ user });
+        return res.json({ user, token: generateToken({ id: user._id }) });
     }
     catch (err) {
         return res.status(400).json({ error: 'Registration failed' })
@@ -33,18 +39,9 @@ router.post('/authenticate', async (req, res) => {
         if (!await bcrypt.compare(password, user.password))
             return res.status(400).json({ error: 'Invalid password' })
 
-        /*const token = jwt.sign({ id: user._id }, authConfig.secret, {
-            expiresIn: 86400,
-        });*/
-
-        const token = Object.keys(authConfig).length;
-        console.log('1');
-        console.log(authConfig);
-        //Cannot read "secret" property from JSON "auth.json", it keeps requiring and gettind undefined
-
         user.password = undefined;
         return res.json({ user, token });
-
+        res.send({ user, token: generateToken({ id: user._id }) });
     }
     catch (err) {
         return res.status(400).json({ error: 'Authentication failed' })
