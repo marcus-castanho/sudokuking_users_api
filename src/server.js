@@ -8,5 +8,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 require('./controller/authController')(app);
+require('./controller/scoreController')(app);
 
 app.listen(3001);

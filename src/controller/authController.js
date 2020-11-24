@@ -1,5 +1,5 @@
 const express = require('express');
-const User = require('../models/User')
+const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const authConfig = require('../config/auth');
@@ -33,6 +33,7 @@ router.post('/register', async (req, res) => {
 router.post('/authenticate', async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email }).select('+password');
+
     try {
         if (!user)
             return res.status(400).json({ error: 'User not found' })
@@ -40,8 +41,7 @@ router.post('/authenticate', async (req, res) => {
             return res.status(400).json({ error: 'Invalid password' })
 
         user.password = undefined;
-        return res.json({ user, token });
-        res.send({ user, token: generateToken({ id: user._id }) });
+        return res.send({ user, token: generateToken({ id: user._id }) });
     }
     catch (err) {
         return res.status(400).json({ error: 'Authentication failed' })
