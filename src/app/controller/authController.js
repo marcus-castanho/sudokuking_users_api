@@ -2,7 +2,9 @@ const express = require('express');
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const authConfig = require('../config/auth');
+const authConfig = require('../../config/auth');
+const crypto = require('crypto');
+const mailer = require('../modules/mailer')
 
 const router = express.Router();
 
@@ -47,5 +49,46 @@ router.post('/authenticate', async (req, res) => {
         return res.status(400).json({ error: 'Authentication failed' })
     }
 })
+
+router.post('/forgot_password', async (req, res) => {
+    const { email } = req.body;
+    const user = await User.findOne({ email }).select('+password');
+
+    try {
+        if (!user)
+            return res.status(400).json({ error: 'User not found' });
+
+        const token = crypto.randomBytes(20).toString('hex');
+
+        const now = new Date();
+        now.setHours(now.getHours() + 1);
+
+        await User.findByIdAndUpdate(user._id, {
+            '$set': {
+                passwordResetToken: token,
+                passwordResetExpires: now,
+            }
+        });
+
+        mailer.sendMail({
+            to: email,
+            from: 'castanhomarcus@gmail.com',
+            template: 'auth/forgot_password',
+            context: { token },
+        },
+            (err) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(400).send({ error: 'Could not send recover password email' });
+                }
+                return res.send();
+            }
+        );
+    }
+    catch (err) {
+        return res.status(400).json({ error: 'Recover password process failed. Please try again' })
+    }
+});
+
 
 module.exports = app => app.use('/auth', router);
