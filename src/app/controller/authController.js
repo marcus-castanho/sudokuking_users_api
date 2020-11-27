@@ -78,7 +78,6 @@ router.post('/forgot_password', async (req, res) => {
         },
             (err) => {
                 if (err) {
-                    console.log(err);
                     return res.status(400).send({ error: 'Could not send recover password email' });
                 }
                 return res.send();
