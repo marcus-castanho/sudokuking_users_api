@@ -23,6 +23,13 @@ router.post('/register', async (req, res) => {
 
         const user = await User.create(req.body);
 
+        /*await User.findByIdAndUpdate(user._id, {
+            '$set': {
+                authToken: token,
+                authTokenExpires: now,
+            }
+        });*/
+
         user.password = undefined;
 
         return res.json({ user, token: generateToken({ id: user._id }) });

@@ -8,26 +8,17 @@ router.use(authMidleware);
 
 router.get('/user/:userId', async (req, res) => {
     const { userId } = req.body;
-    const user = await User.findOne({ userId });
+    const find_user = await User.findOne({ userId });
 
     try {
+        const user = {username: find_user.username,score:find_user.score};
+
         return res.send({ user })
     }
     catch (err) {
         return res.status(400).json({ error: 'Error getting user info, please try again.' })
     }
 });
-
-router.get('/users_list', async (req, res) => {
-    const users_list = await User.find();
-
-    try {
-        return res.send({ users_list })
-    }
-    catch (err) {
-        return res.status(400).json({ error: 'Error getting users soore list, please, try again.' })
-    }
-})
 
 router.put('/update_score', async (req, res) => {
     const { email, score } = req.body;

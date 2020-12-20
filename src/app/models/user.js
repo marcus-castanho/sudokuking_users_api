@@ -23,6 +23,14 @@ const UserSchema = new mongoose.Schema({
         require: true,
         default: 0
     },
+    authToken: {
+        type: String,
+        select: false
+    },
+    authTokenExpires: {
+        type: Date,
+        select: false
+    },
     passwordResetToken: {
         type: String,
         select: false
