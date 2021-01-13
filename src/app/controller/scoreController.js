@@ -11,7 +11,7 @@ router.get('/user/:userId', async (req, res) => {
     const find_user = await User.findOne({ userId });
 
     try {
-        const user = {username: find_user.username,score:find_user.score};
+        const user = { username: find_user.username, score: find_user.score };
 
         return res.send({ user })
     }
@@ -36,11 +36,10 @@ router.put('/update_score', async (req, res) => {
                 }
             });
         }
-
-        return res.send(User.findOne({ email }));
+        return res.status(200).send({ user })
     }
     catch (err) {
-        return res.status(400).json({ error: 'New score not saved, please try again.' })
+        return res.status(500).json({ error: 'New score not saved, please try again.' })
     }
 });
 
