@@ -21,10 +21,11 @@ router.get('/user/:userId', async (req, res) => {
 });
 
 router.put('/update_score', async (req, res) => {
-    const { email, score } = req.body;
+    const userId = req.userId;
+    const { score } = req.body;
 
     try {
-        const user = await User.findOne({ email });
+        let user = await User.findOne({ _id: userId });
 
         if (score <= user.score) {
             return res.status(200).json({ Message: 'Your best score has not changed.' })
@@ -34,12 +35,16 @@ router.put('/update_score', async (req, res) => {
                 '$set': {
                     score: score,
                 }
+
             });
         }
+
+        user = await User.findOne({ _id: userId })
+
         return res.status(200).send({ user })
     }
     catch (err) {
-        return res.status(500).json({ error: 'New score not saved, please try again.' })
+        return res.status(540000).json({ error: 'New score not saved, please try again.' })
     }
 });
 
