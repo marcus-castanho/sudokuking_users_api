@@ -16,19 +16,15 @@ function generateToken(params = {}) {
 
 router.post('/register', async (req, res) => {
     try {
-        const { email } = req.body;
+        const { email, username } = req.body;
 
         if (await User.findOne({ email }))
             return res.status(400).json({ error: 'E-mail already registered' });
 
-        const user = await User.create(req.body);
+        if (await User.findOne({ username }))
+            return res.status(400).json({ error: 'Username already registered' });
 
-        /*await User.findByIdAndUpdate(user._id, {
-            '$set': {
-                authToken: token,
-                authTokenExpires: now,
-            }
-        });*/
+        const user = await User.create(req.body);
 
         user.password = undefined;
 
