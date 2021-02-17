@@ -20,7 +20,7 @@ const UserSchema = new mongoose.Schema({
     },
     score: {
         type: Number,
-        require: true,
+        required: true,
         default: 0
     },
     authToken: {

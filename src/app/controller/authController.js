@@ -75,7 +75,7 @@ router.post('/forgot_password', async (req, res) => {
 
         mailer.sendMail({
             to: email,
-            from: 'teste@gmail.com',
+            from: 'support@sudokuking.com',
             template: 'auth/forgot_password',
             context: { token },
         },
@@ -121,7 +121,7 @@ router.post('/reset_password', async (req, res) => {
         console.log(err)
         return res.status(400).json({ error: 'Reset password process failed. Please try again' })
     }
-})
+});
 
 
 module.exports = app => app.use('/auth', router);
