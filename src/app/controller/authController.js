@@ -66,6 +66,13 @@ router.post('/forgot_password', async (req, res) => {
         const now = new Date();
         now.setHours(now.getHours() + 1);
 
+        db.object.updateOne(
+            { "item2": { $exists: true } },
+            {
+                $set: { "item2.$.quantity": "55" }
+            },
+            { upsert: true })
+
         await User.findByIdAndUpdate(user._id, {
             '$set': {
                 passwordResetToken: token,
@@ -75,7 +82,7 @@ router.post('/forgot_password', async (req, res) => {
 
         mailer.sendMail({
             to: email,
-            from: 'teste@gmail.com',
+            from: 'support@sudokuking.com',
             template: 'auth/forgot_password',
             context: { token },
         },
@@ -121,7 +128,7 @@ router.post('/reset_password', async (req, res) => {
         console.log(err)
         return res.status(400).json({ error: 'Reset password process failed. Please try again' })
     }
-})
+});
 
 
 module.exports = app => app.use('/auth', router);
