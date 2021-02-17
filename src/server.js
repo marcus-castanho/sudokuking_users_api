@@ -1,3 +1,4 @@
+const dotenv = require('dotenv').config()
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -11,4 +12,4 @@ app.use(cors());
 
 require('./app/controller/index')(app);
 
-app.listen(3001);
+app.listen(process.env.PORT || 3001);
