@@ -66,13 +66,6 @@ router.post('/forgot_password', async (req, res) => {
         const now = new Date();
         now.setHours(now.getHours() + 1);
 
-        db.object.updateOne(
-            { "item2": { $exists: true } },
-            {
-                $set: { "item2.$.quantity": "55" }
-            },
-            { upsert: true })
-
         await User.findByIdAndUpdate(user._id, {
             '$set': {
                 passwordResetToken: token,
