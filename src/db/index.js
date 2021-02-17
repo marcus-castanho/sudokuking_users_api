@@ -1,6 +1,7 @@
+const dotenv = require('dotenv').config()
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://192.168.99.100:27017/sudokuking_users_db', {
+mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
