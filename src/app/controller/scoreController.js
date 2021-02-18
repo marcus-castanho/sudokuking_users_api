@@ -7,8 +7,8 @@ const router = express.Router();
 router.use(authMidleware);
 
 router.get('/user/:userId', async (req, res) => {
-    const { userId } = req.body;
-    const find_user = await User.findOne({ userId });
+    const userId = req.userId;
+    const find_user = await User.findOne({ _id: userId });
 
     try {
         const user = { username: find_user.username, score: find_user.score };

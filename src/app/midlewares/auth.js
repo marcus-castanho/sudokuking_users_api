@@ -1,6 +1,5 @@
+const dotenv = require('dotenv').config()
 const jwt = require('jsonwebtoken');
-const authConfig = require('../../config/auth.json');
-
 
 module.exports = (req, res, next) => {
     const authHeader = req.headers.authorization;
@@ -21,7 +20,7 @@ module.exports = (req, res, next) => {
         return res.status(401).send({ error: 'Token malformed' });
     }
 
-    jwt.verify(token, authConfig.secret, (err, decoded) => {
+    jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
         if (err) {
             return res.status(401).send({ error: 'Token invalid' });
         }
